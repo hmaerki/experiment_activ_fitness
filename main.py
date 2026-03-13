@@ -31,6 +31,9 @@ class FitnessApp:
         document.getElementById("btn-cancel").addEventListener(
             "click", create_proxy(self.cancel_exercise)
         )
+        document.getElementById("btn-delete-workout").addEventListener(
+            "click", create_proxy(self.delete_workout)
+        )
         document.getElementById("workouts-list").addEventListener(
             "click", create_proxy(self._on_workout_click)
         )
@@ -163,6 +166,12 @@ class FitnessApp:
 
     def cancel_exercise(self, event=None) -> None:
         self.show_workout(self.current_workout_date)
+
+    def delete_workout(self, event=None) -> None:
+        if self.current_workout_date in self.workouts:
+            del self.workouts[self.current_workout_date]
+            self._save()
+        self.show_workouts()
 
 
 async def _init() -> None:
