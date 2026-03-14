@@ -28,7 +28,10 @@
 body {
   margin: 0;
   font-family: system-ui, sans-serif;
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image: url('../assets/hans_im_glueck.svg');
+  background-repeat: repeat;
+  background-size: 120px auto;
   color: #212121;
 }
 
@@ -51,12 +54,6 @@ header h1 {
 .header-logo {
   height: 120px;
   width: auto;
-}
-
-.header-hans {
-  height: 120px;
-  width: auto;
-  margin-left: auto;
 }
 
 /* ── Main content ─────────────────────────────────────────── */
