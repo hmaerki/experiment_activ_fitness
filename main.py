@@ -1,9 +1,14 @@
-from pyscript import document, when
+from pyscript import document
 import exercises_hans
 import exercises_sandra
 import json
 import js
-from datetime import datetime
+
+try:
+    import micropython
+    IS_MICROPYTHON = True
+except ImportError:
+    IS_MICROPYTHON = False
 
 STORAGE_KEY = "activ_fitness_workouts"
 STORAGE_WHO = "activ_fitness_who"
@@ -30,19 +35,22 @@ class FitnessApp:
         self.who: str = stored_who if stored_who in WHO_MAP else "hans"
         self._apply_who()
 
-        when("click", "#btn-new-workout")(self.new_workout)
-        when("click", "#hans-walker")(self.toggle_who)
-        when("click", "#btn-back-to-workouts")(self.show_workouts)
-        when("click", "#btn-done")(self.done_exercise)
-        when("click", "#btn-cancel")(self.cancel_exercise)
-        when("click", "#btn-delete-workout")(self.delete_workout)
-        when("click", "#btn-show-json")(self.show_json)
-        when("click", "#btn-back-from-json")(self._back_from_json)
-        when("click", "#btn-back-from-json2")(self._back_from_json)
-        when("click", "#btn-save-json")(self._save_json)
-        when("click", "#btn-delete-storage")(self._delete_storage)
-        when("click", "#workouts-list")(self._on_workout_click)
-        when("click", "#exercises-list")(self._on_exercise_click)
+        def _add(id, fn):
+            document.getElementById(id).addEventListener("click", fn)
+
+        _add("btn-new-workout", self.new_workout)
+        _add("hans-walker", self.toggle_who)
+        _add("btn-back-to-workouts", self.show_workouts)
+        _add("btn-done", self.done_exercise)
+        _add("btn-cancel", self.cancel_exercise)
+        _add("btn-delete-workout", self.delete_workout)
+        _add("btn-show-json", self.show_json)
+        _add("btn-back-from-json", self._back_from_json)
+        _add("btn-back-from-json2", self._back_from_json)
+        _add("btn-save-json", self._save_json)
+        _add("btn-delete-storage", self._delete_storage)
+        _add("workouts-list", self._on_workout_click)
+        _add("exercises-list", self._on_exercise_click)
 
         self.show_workouts()
 
@@ -115,7 +123,17 @@ class FitnessApp:
                 else exercises_sandra.EXERCISES
             )
 
-        date_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        # In python, this would be:
+        # date_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        d = js.Date.new()
+        date_str = "{}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}".format(
+            d.getFullYear(),
+            d.getMonth() + 1,
+            d.getDate(),
+            d.getHours(),
+            d.getMinutes(),
+            d.getSeconds(),
+        )
         self.workouts[date_str] = template.copy()
         self._save()
         self.show_workout(date_str)
@@ -126,7 +144,8 @@ class FitnessApp:
             date_str = str(target.getAttribute("data-date"))
             self.show_workout(date_str)
 
-    def show_workout(self, date_str: str) -> None:
+    def show_workout(self, date_str: str | None) -> None:
+        assert date_str is not None
         self.current_workout_date = date_str
         self._show_view("view-workout")
         document.getElementById("workout-date").textContent = date_str
@@ -238,7 +257,8 @@ class FitnessApp:
     def show_json(self, event=None) -> None:
         self._show_view("view-json")
         data = self.workouts[self.current_workout_date]
-        document.getElementById("json-content").value = json.dumps(data, indent=2)
+        kwargs = {} if IS_MICROPYTHON else {"indent":2}
+        document.getElementById("json-content").value = json.dumps(data, **kwargs)
         document.getElementById("json-error").textContent = ""
 
     def _save_json(self, event=None) -> None:
@@ -246,9 +266,10 @@ class FitnessApp:
         error_el = document.getElementById("json-error")
         try:
             data = json.loads(raw)
-        except json.JSONDecodeError as e:
+        except ValueError as e:
             error_el.textContent = f"Invalid JSON: {e}"
             return
+
         self.workouts[self.current_workout_date] = data
         self._save()
         error_el.textContent = ""
