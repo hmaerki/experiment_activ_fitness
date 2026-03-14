@@ -25,6 +25,8 @@ class FitnessApp:
         when("click", "#btn-delete-workout")(self.delete_workout)
         when("click", "#btn-show-json")(self.show_json)
         when("click", "#btn-back-from-json")(self._back_from_json)
+        when("click", "#btn-back-from-json2")(self._back_from_json)
+        when("click", "#btn-save-json")(self._save_json)
         when("click", "#workouts-list")(self._on_workout_click)
         when("click", "#exercises-list")(self._on_exercise_click)
 
@@ -184,7 +186,21 @@ class FitnessApp:
     def show_json(self, event=None) -> None:
         self._show_view("view-json")
         data = self.workouts[self.current_workout_date]
-        document.getElementById("json-content").textContent = json.dumps(data, indent=2)
+        document.getElementById("json-content").value = json.dumps(data, indent=2)
+        document.getElementById("json-error").textContent = ""
+
+    def _save_json(self, event=None) -> None:
+        raw = str(document.getElementById("json-content").value)
+        error_el = document.getElementById("json-error")
+        try:
+            data = json.loads(raw)
+        except json.JSONDecodeError as e:
+            error_el.textContent = f"Invalid JSON: {e}"
+            return
+        self.workouts[self.current_workout_date] = data
+        self._save()
+        error_el.textContent = ""
+        self.show_workout(self.current_workout_date)
 
     def _back_from_json(self, event=None) -> None:
         self.show_workout(self.current_workout_date)

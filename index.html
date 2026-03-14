@@ -71,7 +71,12 @@
       <section id="view-json" hidden>
         <button id="btn-back-from-json" class="back-btn"><svg width="22" height="22"><use href="#arrow-left"/></svg> Back</button>
         <h2>Workout JSON</h2>
-        <pre id="json-content" style="background:var(--card);padding:1rem;border-radius:var(--radius);overflow:auto;font-size:0.85rem;"></pre>
+        <textarea id="json-content" rows="24" style="width:100%;font-family:monospace;font-size:0.85rem;padding:1rem;border-radius:var(--radius);border:1px solid #ccc;background:var(--card);box-sizing:border-box;"></textarea>
+        <p id="json-error" style="color:var(--primary);font-weight:600;"></p>
+        <div class="btn-row" style="margin-top:0.5rem;">
+          <button id="btn-back-from-json2" class="secondary"><svg width="22" height="22"><use href="#arrow-left"/></svg> Cancel</button>
+          <button id="btn-save-json" class="primary">Save <svg width="22" height="22"><use href="#arrow-right"/></svg></button>
+        </div>
       </section>
 
       <!-- ── View: Exercise detail ─────────────────────────────── -->
