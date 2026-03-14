@@ -48,6 +48,11 @@ header h1 {
   font-weight: 600;
 }
 
+.header-logo {
+  height: 2rem;
+  width: auto;
+}
+
 /* ── Main content ─────────────────────────────────────────── */
 main {
   max-width: 640px;
