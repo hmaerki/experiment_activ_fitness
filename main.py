@@ -9,7 +9,7 @@ STORAGE_KEY = "activ_fitness_workouts"
 STORAGE_WHO = "activ_fitness_who"
 
 WHO_MAP = {
-    "hans":   {"image": "hans_im_glueck.svg",   "name": "Hans"},
+    "hans": {"image": "hans_im_glueck.svg", "name": "Hans"},
     "sandra": {"image": "sandra_mit_hund.svg", "name": "Sandra"},
 }
 WHO_ORDER = ["hans", "sandra"]
@@ -20,7 +20,7 @@ class FitnessApp:
         print("FitnessApp()")
         self.workouts: dict = {}
         self.current_workout_date: str | None = None
-        self.current_exercise_key: str | None = None
+        self.current_machine: str | None = None
 
         stored = js.localStorage.getItem(STORAGE_KEY)
         if stored:
@@ -81,7 +81,7 @@ class FitnessApp:
 
         for date_str in sorted(self.workouts.keys(), reverse=True):
             workout = self.workouts[date_str]
-            done_count = sum(1 for ex in workout.values() if ex.get("done"))
+            done_count = sum(1 for ex in workout if ex.get("done"))
             total = len(workout)
 
             li = document.createElement("li")
@@ -105,10 +105,14 @@ class FitnessApp:
         if len(self.workouts) > 0:
             last_date = max(self.workouts.keys())
             template = self.workouts[last_date]
-            for exercise in template.values():
+            for exercise in template:
                 exercise.pop("done", None)
         else:
-            template = exercises_hans.EXERCISES if self.who == "hans" else exercises_sandra.EXERCISES
+            template = (
+                exercises_hans.EXERCISES
+                if self.who == "hans"
+                else exercises_sandra.EXERCISES
+            )
 
         date_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.workouts[date_str] = template.copy()
@@ -129,20 +133,16 @@ class FitnessApp:
         container = document.getElementById("exercises-list")
         container.innerHTML = ""
 
-        workout = self.workouts[date_str]
-        sorted_items = sorted(
-            workout.items(),
-            key=lambda kv: kv[1]["factor"],
-            reverse=True,
-        )
-        for key, exercise in sorted_items:
+        exercises = self.workouts[date_str]
+        for exercise in exercises:
+            machine = exercise["machine"]
             li = document.createElement("li")
             li.className = "exercise-item" + (" done" if exercise.get("done") else "")
-            li.setAttribute("data-key", key)
+            li.setAttribute("data-key", machine)
 
             span_key = document.createElement("span")
             span_key.className = "exercise-key"
-            span_key.textContent = key
+            span_key.textContent = machine
 
             span_name = document.createElement("span")
             span_name.className = "exercise-name"
@@ -158,12 +158,18 @@ class FitnessApp:
             key = str(target.getAttribute("data-key"))
             self.show_exercise(key)
 
-    def show_exercise(self, exercise_key: str) -> None:
-        self.current_exercise_key = exercise_key
+    def _find_exercise(self, machine: str) -> dict:
+        for ex in self.workouts[self.current_workout_date]:
+            if ex["machine"] == machine:
+                return ex
+        raise ValueError(f"Machine '{machine}' not found.")
+
+    def show_exercise(self, machine: str) -> None:
+        self.current_machine = machine
         self._show_view("view-exercise")
 
-        exercise = self.workouts[self.current_workout_date][exercise_key]
-        document.getElementById("exercise-key").textContent = exercise_key
+        exercise = self._find_exercise(machine=machine)
+        document.getElementById("exercise-key").textContent = machine
         document.getElementById("exercise-short").textContent = exercise.get(
             "short", ""
         )
@@ -173,12 +179,8 @@ class FitnessApp:
         document.getElementById("exercise-weight").value = str(
             exercise.get("weight", "")
         )
-        document.getElementById("exercise-set1").value = str(
-            exercise.get("set1", 15)
-        )
-        document.getElementById("exercise-set2").value = str(
-            exercise.get("set2", 15)
-        )
+        document.getElementById("exercise-set1").value = str(exercise.get("set1", 15))
+        document.getElementById("exercise-set2").value = str(exercise.get("set2", 15))
 
         card = document.getElementById("exercise-detail-card")
         if exercise.get("done"):
@@ -190,12 +192,16 @@ class FitnessApp:
         SVG_LEFT = '<svg width="22" height="22"><use href="#arrow-left"/></svg>'
         SVG_RIGHT = '<svg width="22" height="22"><use href="#arrow-right"/></svg>'
         if exercise.get("done"):
-            btn_done.innerHTML = f'{SVG_LEFT} Undo Done'
+            btn_done.innerHTML = f"{SVG_LEFT} Undo Done"
         else:
-            btn_done.innerHTML = f'Done {SVG_RIGHT}'
+            btn_done.innerHTML = f"Done {SVG_RIGHT}"
 
     def done_exercise(self, event=None) -> None:
-        exercise = self.workouts[self.current_workout_date][self.current_exercise_key]
+        exercise = next(
+            ex
+            for ex in self.workouts[self.current_workout_date]
+            if ex["machine"] == self.current_machine
+        )
 
         weight_val = str(document.getElementById("exercise-weight").value)
         if weight_val:
