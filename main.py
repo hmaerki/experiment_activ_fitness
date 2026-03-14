@@ -10,7 +10,7 @@ STORAGE_WHO = "activ_fitness_who"
 
 WHO_MAP = {
     "hans":   {"image": "hans_im_glueck.svg",   "name": "Hans"},
-    "sandra": {"image": "sandra_im_glueck.svg", "name": "Sandra"},
+    "sandra": {"image": "sandra_mit_hund.svg", "name": "Sandra"},
 }
 WHO_ORDER = ["hans", "sandra"]
 
