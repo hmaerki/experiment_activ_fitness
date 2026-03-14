@@ -191,7 +191,7 @@ li.exercise-item.done .exercise-key {
   height: 22px;
   width: auto;
   margin-left: auto;
-  opacity: 0.85;
+  filter: invert(11%) sepia(96%) saturate(6000%) hue-rotate(3deg) brightness(95%) contrast(115%);
 }
 
 /* Empty hint */
