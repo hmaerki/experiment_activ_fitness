@@ -131,8 +131,11 @@ class FitnessApp:
         document.getElementById("exercise-weight").value = str(
             exercise.get("weight", "")
         )
-        document.getElementById("exercise-repetitions").value = str(
-            exercise.get("repetitions", 15)
+        document.getElementById("exercise-set1").value = str(
+            exercise.get("set1", 15)
+        )
+        document.getElementById("exercise-set2").value = str(
+            exercise.get("set2", 15)
         )
 
         card = document.getElementById("exercise-detail-card")
@@ -159,10 +162,16 @@ class FitnessApp:
             except (ValueError, TypeError):
                 pass
 
-        reps_val = str(document.getElementById("exercise-repetitions").value)
+        reps_val = str(document.getElementById("exercise-set1").value)
         if reps_val:
             try:
-                exercise["repetitions"] = int(reps_val)
+                exercise["set1"] = int(reps_val)
+            except (ValueError, TypeError):
+                pass
+        reps_val = str(document.getElementById("exercise-set2").value)
+        if reps_val:
+            try:
+                exercise["set2"] = int(reps_val)
             except (ValueError, TypeError):
                 pass
 
