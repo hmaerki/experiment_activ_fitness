@@ -23,6 +23,8 @@ class FitnessApp:
         when("click", "#btn-done")(self.done_exercise)
         when("click", "#btn-cancel")(self.cancel_exercise)
         when("click", "#btn-delete-workout")(self.delete_workout)
+        when("click", "#btn-show-json")(self.show_json)
+        when("click", "#btn-back-from-json")(self._back_from_json)
         when("click", "#workouts-list")(self._on_workout_click)
         when("click", "#exercises-list")(self._on_exercise_click)
 
@@ -32,7 +34,7 @@ class FitnessApp:
         js.localStorage.setItem(STORAGE_KEY, json.dumps(self.workouts))
 
     def _show_view(self, view_id: str) -> None:
-        for vid in ("view-workouts", "view-workout", "view-exercise"):
+        for vid in ("view-workouts", "view-workout", "view-exercise", "view-json"):
             el = document.getElementById(vid)
             if vid == view_id:
                 el.removeAttribute("hidden")
@@ -177,6 +179,14 @@ class FitnessApp:
 
         exercise["done"] = not exercise.get("done", False)
         self._save()
+        self.show_workout(self.current_workout_date)
+
+    def show_json(self, event=None) -> None:
+        self._show_view("view-json")
+        data = self.workouts[self.current_workout_date]
+        document.getElementById("json-content").textContent = json.dumps(data, indent=2)
+
+    def _back_from_json(self, event=None) -> None:
         self.show_workout(self.current_workout_date)
 
     def cancel_exercise(self, event=None) -> None:

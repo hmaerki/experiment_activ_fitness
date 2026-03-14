@@ -61,7 +61,17 @@
         <button id="btn-back-to-workouts" class="back-btn"><svg width="22" height="22"><use href="#arrow-left"/></svg> Workouts</button>
         <h2 id="workout-date"></h2>
         <ul id="exercises-list"></ul>
-        <button id="btn-delete-workout" class="primary" style="margin-top:1rem;">Delete this workout <svg width="22" height="22"><use href="#arrow-right"/></svg></button>
+        <div class="btn-row" style="margin-top:1rem;">
+          <button id="btn-show-json" class="secondary">Show JSON</button>
+          <button id="btn-delete-workout" class="secondary">Delete this workout</button>
+        </div>
+      </section>
+
+      <!-- ── View: JSON ──────────────────────────────────────────── -->
+      <section id="view-json" hidden>
+        <button id="btn-back-from-json" class="back-btn"><svg width="22" height="22"><use href="#arrow-left"/></svg> Back</button>
+        <h2>Workout JSON</h2>
+        <pre id="json-content" style="background:var(--card);padding:1rem;border-radius:var(--radius);overflow:auto;font-size:0.85rem;"></pre>
       </section>
 
       <!-- ── View: Exercise detail ─────────────────────────────── -->
