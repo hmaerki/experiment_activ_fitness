@@ -142,10 +142,12 @@ class FitnessApp:
             card.classList.remove("done")
 
         btn_done = document.getElementById("btn-done")
+        SVG_LEFT = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>'
+        SVG_RIGHT = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>'
         if exercise.get("done"):
-            btn_done.innerHTML = '<i class="fa-solid fa-arrow-left fa-lg"></i> Undo Done'
+            btn_done.innerHTML = f'{SVG_LEFT} Undo Done'
         else:
-            btn_done.innerHTML = 'Done <i class="fa-solid fa-arrow-right fa-lg"></i>'
+            btn_done.innerHTML = f'Done {SVG_RIGHT}'
 
     def done_exercise(self, event=None) -> None:
         exercise = self.workouts[self.current_workout_date][self.current_exercise_key]
