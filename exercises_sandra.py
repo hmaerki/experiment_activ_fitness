@@ -1,5 +1,5 @@
-FACTOR_TWO_MACHINES = 0.5
-FACTOR_DOUBLE_EXERCISE = 2.0
+FACTOR_TWO_MACHINES = "priority_snail.png"
+FACTOR_DOUBLE_EXERCISE = "priority_emergency.png"
 
 EXERCISES = [
     {
@@ -52,7 +52,7 @@ EXERCISES = [
     },
     {
         "machine": "Mitte1",
-        "factor": FACTOR_DOUBLE_EXERCISE,
+        "priority": FACTOR_DOUBLE_EXERCISE,
         "short": "Kurzhantel 45 Bank Seitenneigen",
         "comment": "Höhe 4",
         "weight": 3.0,
@@ -61,7 +61,7 @@ EXERCISES = [
     },
     {
         "machine": "Mitte2",
-        "factor": FACTOR_DOUBLE_EXERCISE,
+        "priority": FACTOR_DOUBLE_EXERCISE,
         "short": "45 Bank Rückenstrecken mit Gewicht",
         "comment": "Höhe 2",
         "weight": 3.0,
@@ -78,7 +78,7 @@ EXERCISES = [
     },
     {
         "machine": "A5",
-        "factor": FACTOR_TWO_MACHINES,
+        "priority": FACTOR_TWO_MACHINES,
         "short": "Beinbeuger",
         "comment": "Technogym, Sitz 2, Fuss 1, ROM 2",
         "weight": 17.5,
@@ -87,7 +87,7 @@ EXERCISES = [
     },
     {
         "machine": "A2",
-        "factor": FACTOR_TWO_MACHINES,
+        "priority": FACTOR_TWO_MACHINES,
         "short": "Beinpresse",
         "comment": "Sitz 1, Fuss 2",
         "weight": 40.0,

@@ -187,6 +187,13 @@ li.exercise-item.done .exercise-key {
   color: var(--muted);
 }
 
+.priority-icon {
+  height: 22px;
+  width: auto;
+  margin-left: auto;
+  opacity: 0.85;
+}
+
 /* Empty hint */
 li.empty-hint {
   color: var(--muted);

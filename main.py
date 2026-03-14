@@ -150,6 +150,13 @@ class FitnessApp:
 
             li.appendChild(span_key)
             li.appendChild(span_name)
+            priority = exercise.get("priority")
+            if priority:
+                img = document.createElement("img")
+                img.src = f"./assets/{priority}"
+                img.className = "priority-icon"
+                img.alt = priority
+                li.appendChild(img)
             container.appendChild(li)
 
     def _on_exercise_click(self, event) -> None:
