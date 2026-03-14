@@ -1,2 +1,5 @@
 name = "Activ Fitness"
 description = "A web-based fitness training plan application built with PyScript."
+
+[files]
+"./exercises.py" = ""

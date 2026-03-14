@@ -1,6 +1,5 @@
-from pyscript import document
-from pyodide.http import pyfetch
-from pyodide.ffi import create_proxy
+from pyscript import document, when
+from exercises import EXERCISES
 import json
 import js
 from datetime import datetime
@@ -19,27 +18,13 @@ class FitnessApp:
         if stored:
             self.workouts = json.loads(stored)
 
-        document.getElementById("btn-new-workout").addEventListener(
-            "click", create_proxy(self.new_workout)
-        )
-        document.getElementById("btn-back-to-workouts").addEventListener(
-            "click", create_proxy(self.show_workouts)
-        )
-        document.getElementById("btn-done").addEventListener(
-            "click", create_proxy(self.done_exercise)
-        )
-        document.getElementById("btn-cancel").addEventListener(
-            "click", create_proxy(self.cancel_exercise)
-        )
-        document.getElementById("btn-delete-workout").addEventListener(
-            "click", create_proxy(self.delete_workout)
-        )
-        document.getElementById("workouts-list").addEventListener(
-            "click", create_proxy(self._on_workout_click)
-        )
-        document.getElementById("exercises-list").addEventListener(
-            "click", create_proxy(self._on_exercise_click)
-        )
+        when("click", "#btn-new-workout")(self.new_workout)
+        when("click", "#btn-back-to-workouts")(self.show_workouts)
+        when("click", "#btn-done")(self.done_exercise)
+        when("click", "#btn-cancel")(self.cancel_exercise)
+        when("click", "#btn-delete-workout")(self.delete_workout)
+        when("click", "#workouts-list")(self._on_workout_click)
+        when("click", "#exercises-list")(self._on_exercise_click)
 
         self.show_workouts()
 
@@ -184,13 +169,4 @@ class FitnessApp:
         self.show_workouts()
 
 
-async def _init() -> None:
-    response = await pyfetch("./assets/exercises.json")
-    text = await response.string()
-    exercises_template = json.loads(text)
-    global APP
-    APP = FitnessApp(exercises_template)
-
-
-import asyncio
-asyncio.ensure_future(_init())
+APP = FitnessApp(EXERCISES)

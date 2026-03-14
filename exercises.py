@@ -1,4 +1,4 @@
-{
+EXERCISES = {
     "A5": {
         "short": "Leg Curls",
         "comment": "Technogym, Sitz 6, Fuss 6, ROM 2",
