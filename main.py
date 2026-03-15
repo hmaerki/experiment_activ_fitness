@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from pyscript import document, when
-import js
+from pyscript import document, when # type: ignore
+import js # type: ignore
 import application
 import persistence
 

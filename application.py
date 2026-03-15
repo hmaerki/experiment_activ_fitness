@@ -73,7 +73,7 @@ class Workouts(list[Workout]):
     def persistent_factory(workouts_text: str) -> Workouts:
         try:
             v = eval(workouts_text)
-        except Exception as e:
+        except Exception:
             return Workouts()
         assert isinstance(v, Workouts)
         return v
