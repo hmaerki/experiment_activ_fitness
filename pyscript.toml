@@ -3,4 +3,6 @@ description = "A web-based fitness training plan application built with PyScript
 terminal = true
 
 [files]
+"./application.py" = ""
 "./configuration.py" = ""
+"./persistence.py" = ""
