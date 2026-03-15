@@ -47,11 +47,19 @@ class Workouts(list[Workout]):
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({super().__repr__()})"
 
-    def get_workout(self, workout_date: str) -> Workout:
+    def get_workout(self, workout_date: str, remove_done: bool = False) -> Workout:
         for workout in self:
             if workout.workout_date == workout_date:
+                if remove_done:
+                    for exercise in workout.exercises:
+                        exercise.done = False
                 return workout
         raise ValueError(f"workoutdate '{workout_date} not found!")
+
+    def get_workout_exercise(self, workout_date: str, machine: str) -> WorkoutExercise:
+        return self.get_workout(workout_date=workout_date).exercises.get_exercise(
+            machine=machine
+        )
 
     @property
     def has_workouts(self) -> bool:
@@ -70,6 +78,10 @@ class Workouts(list[Workout]):
     @property
     def workout_dates(self) -> list[str]:
         return sorted({w.workout_date for w in self}, reverse=True)
+
+    def get_progress(self, workout_date: str) -> str:
+        workout = self.get_workout(workout_date=workout_date)
+        return workout.exercises.progress_text
 
 
 class Exercise:
