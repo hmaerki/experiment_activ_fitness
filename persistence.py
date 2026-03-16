@@ -72,9 +72,9 @@ class Persistence:
         js.localStorage.setItem(STORAGE_KEY_WORKOUTS, self.workouts.persistent_text)
 
     def delete_workout(self, workout_date: str) -> None:
-        if workout_date in self.dict_workouts:
-            del self.dict_workouts[workout_date]
-            self.save()
+        workout = self.workouts.get_workout(workout_date=workout_date)
+        self.workouts.remove(workout)
+        self.save()
 
     def delete_storage(self) -> None:
         js.localStorage.removeItem(STORAGE_KEY_WORKOUTS)
