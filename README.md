@@ -2,7 +2,8 @@
 
 A web-based fitness training plan application built with [PyScript](https://pyscript.net/), which enables Python to run directly in the browser via WebAssembly (WASM).
 
-Run it: https://hmaerki.github.io/activ_fitness
+Run it:
+https://hmaerki.github.io/activ_fitness_workout/
 
 ## Features
 
