@@ -51,7 +51,7 @@ experiment_activ_fitness/
 
 - **Workouts**: A list of dates when a workout was executed.
     Top of page: Button "New workout".
-    "New workout" will copy assets/exercises.json into the local storage with the current date to allow changes.
+    "New workout" creates a new workout for the current date and copies the exercise values from the most recent previous workout so the new session starts with the latest known settings.
 - **Workout**: Lists exercises: `key` and `short` from from `assets/exercises.json`.
     Already executed exercises are grayed out.
     When clicking on a exercise, the excercise page opens.

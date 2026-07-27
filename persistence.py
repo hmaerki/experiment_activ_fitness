@@ -61,10 +61,19 @@ class Persistence:
 
     def new_workout(self, workout_date: str) -> None:
         assert isinstance(workout_date, str)
+
+        if self.workouts:
+            latest_workout = max(self.workouts, key=lambda workout: workout.workout_date)
+            exercises = latest_workout.exercises
+            for exercise in exercises:
+                exercise.done = False
+        else:
+            exercises = self.who.workout_template
+
         self.workouts.append(
             application.Workout(
                 workout_date=workout_date,
-                exercises=copy.deepcopy(self.who.workout_template),
+                exercises=copy.deepcopy(exercises),
             )
         )
 

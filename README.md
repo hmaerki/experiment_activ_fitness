@@ -10,6 +10,7 @@ https://hmaerki.github.io/activ_fitness_workout/
 - **Workouts list** – shows all recorded workout sessions with progress (done/total exercises)
 - **Workout view** – lists all exercises for a session; completed exercises are greyed out
 - **Exercise detail** – shows machine settings, lets you update the weight and mark the exercise as done
+- **New workout initialization** – when you start a new workout, it inherits the exercise values from the most recent previous workout, so the new session starts with the latest settings
 
 All data is persisted in the browser's `localStorage` – no backend required.
 
